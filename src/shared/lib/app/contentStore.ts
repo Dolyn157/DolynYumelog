@@ -27,7 +27,7 @@ export const createContentStore = (deps: ContentStoreDeps) => {
 
     if (data && data.length > 0) {
       postsCache[type] = {
-        data: data as BaseMetadata[],
+        data: data,
         lastFetch: now,
       };
     }
@@ -52,7 +52,7 @@ export const createContentStore = (deps: ContentStoreDeps) => {
 
     if (data !== null) {
       singleCache[cacheKey] = {
-        data: data as unknown,
+        data: data,
         lastFetch: now,
       };
     }

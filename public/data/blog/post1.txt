@@ -6,8 +6,12 @@ pin: true
 title: 这是测试标题喵
 @end
 
+
 @text
-这是测试文本
+123c
+@end
+@text
+$$bold(这是测试文本)$$
 $$bold(114514bold(233$$info(1234)*
 afdwadawdawdad
 $$bold(233date(20250101))$$

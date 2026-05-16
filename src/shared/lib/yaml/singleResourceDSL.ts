@@ -187,7 +187,7 @@ const createParserFromSchema = (
         const root = getRequiredRoot(ast, schema.root);
         return {
           [schema.outputKey]: parseI18nBlocks(root.content, onError),
-        } as unknown as SingleResourceData;
+        };
       },
     };
   }

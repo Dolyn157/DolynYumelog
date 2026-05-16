@@ -8,6 +8,7 @@ export default tseslint.config(
   {
     ignores: [
       "dist/**",
+      ".vite-ssg-temp/**",
       "yumeDSL/**",
       "node_modules/**",
       ".vscode/**",

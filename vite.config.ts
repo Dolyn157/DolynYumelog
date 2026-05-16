@@ -12,6 +12,7 @@ import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 import { Post } from "./src/shared/types/blog";
 import { getPostSlug } from "./src/shared/lib/app/postSlug";
+import { dynamicYamlConfig } from "./plugins/DynamicConfig";
 
 let cachedPosts: Post[] | null = null;
 
@@ -25,7 +26,8 @@ const getPosts = async (): Promise<Post[]> => {
 export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd());
   const siteOrigin = env.VITE_SSR_SITE_URL?.replace(/\/$/, "") || "https://example.com";
-
+  const blogUrl = "/data/blog/";
+  const blogListUrl = "/data/blog/list.json";
   const srcRoot = fileURLToPath(new URL("./src", import.meta.url));
   const resolveFromRoot = (relativePath: string): string =>
     fileURLToPath(new URL(relativePath, import.meta.url));
@@ -34,9 +36,11 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     plugins: [
       vue(),
       svgLoader(),
+
       (Components as unknown as (options: { resolvers: unknown[] }) => PluginOption)({
         resolvers: [(NaiveUiResolver as unknown as () => unknown)()],
       }),
+      blogUrl && blogListUrl ? [dynamicYamlConfig(blogUrl, blogListUrl)] : [],
     ],
 
     resolve: {

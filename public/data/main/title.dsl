@@ -1,10 +1,10 @@
 @title
 - type: "zh"
-  content: "天气真好啊，我们去散步吧"
+  content: "欢迎来到朵琳的主页"
 - type: "en"
-  content: "How are you? I am fine."
+  content: "Welcome to Gwyndolin's Blog"
 - type: "ja"
-  content: "元気いいね、何かいいことでもあったのかい？"
+  content: "グウィンドリンのブラックへようこそ"
 - type: "other"
   content: "Sorry Unknown Language!"
 @end

@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "tests", "vite.config.ts", "env.d.ts"],
+  "include": ["src", "tests", "vite.config.ts", "env.d.ts", "plugins"],
   "exclude": ["yumeDSL", "node_modules", "dist", ".idea", ".vscode"]
 }

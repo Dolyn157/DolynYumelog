@@ -164,7 +164,7 @@ export const createYamlApi = (
     const ast = parseDSL<ParserName<P>>(text, {
       onError: hooks.onDslError,
       ...parserBridge.syntax,
-    } as ParseDSLOptions<ParserName<P>>);
+    });
 
     return parserBridge.parse(ast, hooks.onDslError);
   };
@@ -191,7 +191,7 @@ export const createYamlApi = (
         throw new Error(`Unsupported DSL resource: ${parserKey}`);
       }
 
-      return parseDslResource(text, parser) as T;
+      return parseDslResource(text, parser);
     }
 
     throw new Error(`Unsupported resource format: ${fileName}`);
