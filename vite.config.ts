@@ -33,6 +33,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     fileURLToPath(new URL(relativePath, import.meta.url));
 
   return {
+    base: "/",
     plugins: [
       vue(),
       svgLoader(),
@@ -167,6 +168,10 @@ Sitemap: ${siteOrigin}/sitemap.xml
           },
         },
       },
+    },
+
+    ssr: {
+      noExternal: ["naive-ui", "vueuc", "@css-render/vue3-ssr"],
     },
   };
 });
