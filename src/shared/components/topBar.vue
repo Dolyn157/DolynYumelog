@@ -74,8 +74,8 @@ const { onMove, onLeave, onEnter } = useCardGlow();
   top: 0.45em;
   height: 3em;
   position: absolute;
-  background-color: rgba(251, 238, 241, 0.1);
-  border: 1px solid rgba(251, 238, 241, 0.2);
+  background-color: rgba(var(--glow-rgb), 0.1);
+  border: 1px solid rgba(var(--glow-rgb), 0.2);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   border-radius: 1.4em;
   backdrop-filter: saturate(110%) blur(5px);
@@ -101,7 +101,7 @@ const { onMove, onLeave, onEnter } = useCardGlow();
     z-index: 1;
     background: radial-gradient(
       800px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.15),
+      rgba(var(--glow-rgb), 0.15),
       transparent 40%
     );
     opacity: var(--opacity);
@@ -123,7 +123,7 @@ const { onMove, onLeave, onEnter } = useCardGlow();
     mask-composite: exclude;
     background: radial-gradient(
       160px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.12),
+      rgba(var(--glow-rgb), 0.12),
       transparent 60%
     );
 

@@ -187,7 +187,7 @@ $transition-speed: 0.3s;
     z-index: 1;
     background: radial-gradient(
       120px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.12),
+      rgba(var(--glow-rgb), 0.12),
       transparent 65%
     );
     opacity: var(--opacity);
@@ -222,8 +222,8 @@ $transition-speed: 0.3s;
     // 4. 背景光斑逻辑（保持不变）
     background: radial-gradient(
       30px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.8),
-      rgba(251, 238, 241, 0.2) 30%,
+      rgba(var(--glow-rgb), 0.8),
+      rgba(var(--glow-rgb), 0.2) 30%,
       transparent 70%
     );
 

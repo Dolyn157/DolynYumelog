@@ -1,3 +1,7 @@
+:root {
+    --glow-rgb: 251, 238, 241;
+}
+
 body {
     margin: 0;
     overscroll-behavior-y: none;
@@ -9,6 +13,33 @@ body {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(8, 6, 12, 0.42);
+        pointer-events: none;
+    }
+
+    :root {
+        --glow-rgb: 150, 140, 152;
+    }
+
+    .glass .commonText,
+    .glass .themeText {
+        color: var(--direct-font-color) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .glass time,
+    .glass .n-icon,
+    .glass .n-icon svg {
+        color: var(--global-theme-color-light) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 }
 

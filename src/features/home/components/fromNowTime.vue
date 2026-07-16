@@ -163,7 +163,7 @@ const buttonTitle = computed(() => {
   pointer-events: auto;
   margin-left: 1em;
   height: 2.2em;
-  border: 1px solid rgba(251, 238, 241, 0.2);
+  border: 1px solid rgba(var(--glow-rgb), 0.2);
   min-width: var(--dynamic-width, auto);
   width: auto;
   @media (min-width: 301px) {

@@ -716,7 +716,7 @@ $border-radius: 16px;
     z-index: 1;
     background: radial-gradient(
       400px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.12),
+      rgba(var(--glow-rgb), 0.12),
       transparent 65%
     );
     opacity: var(--opacity);
@@ -738,8 +738,8 @@ $border-radius: 16px;
     mask-composite: exclude;
     background: radial-gradient(
       180px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.75),
-      rgba(251, 238, 241, 0.25) 30%,
+      rgba(var(--glow-rgb), 0.75),
+      rgba(var(--glow-rgb), 0.25) 30%,
       transparent 70%
     );
 
@@ -816,7 +816,7 @@ $border-radius: 16px;
     z-index: 1;
     background: radial-gradient(
       160px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.1),
+      rgba(var(--glow-rgb), 0.1),
       transparent 65%
     );
     opacity: var(--opacity);
@@ -838,8 +838,8 @@ $border-radius: 16px;
     mask-composite: exclude;
     background: radial-gradient(
       120px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.7),
-      rgba(251, 238, 241, 0.2) 30%,
+      rgba(var(--glow-rgb), 0.7),
+      rgba(var(--glow-rgb), 0.2) 30%,
       transparent 70%
     );
     z-index: 2;
@@ -1030,7 +1030,7 @@ $border-radius: 16px;
 
     .n-alert {
       --n-border: none !important;
-      --n-color: rgba(251, 238, 241, 0.4) !important;
+      --n-color: rgba(var(--glow-rgb), 0.4) !important;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-radius: 12px;
@@ -1042,7 +1042,7 @@ $border-radius: 16px;
       transition: all 0.3s var(--n-bezier);
 
       &:hover {
-        background-color: rgba(251, 238, 241, 0.6) !important;
+        background-color: rgba(var(--glow-rgb), 0.6) !important;
       }
     }
 
@@ -1069,6 +1069,37 @@ $border-radius: 16px;
   }
   50% {
     opacity: 0.9;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .post-card .post-meta,
+  .post-card .post-meta time,
+  .post-card .post-meta span,
+  .post-card .post-meta .time-divider {
+    color: var(--global-theme-color-light) !important;
+  }
+
+  .post-card .post-meta .n-icon svg {
+    stroke: var(--global-theme-color-light) !important;
+    fill: var(--global-theme-color-light) !important;
+  }
+
+  .post-card .post-description {
+    color: var(--direct-font-color) !important;
+    opacity: 0.88;
+  }
+
+  .separator-icon {
+    color: var(--global-theme-color-light) !important;
+  }
+
+  .separator-icon::before {
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.32)) !important;
+  }
+
+  .separator-icon::after {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.32), transparent) !important;
   }
 }
 </style>

@@ -177,7 +177,7 @@ onUnmounted(() => {
   border-radius: 12px;
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(251, 238, 241, 0.1);
+  border: 1px solid rgba(var(--glow-rgb), 0.1);
 }
 
 .skeleton-glow {
@@ -186,7 +186,7 @@ onUnmounted(() => {
   background: linear-gradient(
     90deg,
     transparent 25%,
-    rgba(251, 238, 241, 0.3) 50%,
+    rgba(var(--glow-rgb), 0.3) 50%,
     transparent 75%
   );
   background-size: 200% 100%;

@@ -583,4 +583,109 @@ a.fw-link {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .rich-text-content,
+  .fw-bold,
+  .fw-thin,
+  .fw-date,
+  .fw-fromNow,
+  .center-text,
+  .rich-underline,
+  .rich-strike {
+    color: var(--direct-font-color) !important;
+  }
+
+  .rich-collapse-title {
+    color: var(--global-theme-color-light) !important;
+  }
+
+  .fw-link,
+  .fw-link * {
+    color: #7fb6ff !important;
+  }
+
+  .rich-underline:has(.fw-link),
+  .rich-strike:has(.fw-link) {
+    text-decoration-color: #7fb6ff !important;
+  }
+
+  .rich-underline:has(.code-text),
+  .rich-strike:has(.code-text) {
+    text-decoration-color: var(--global-theme-color-light) !important;
+  }
+
+  .code-text {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+  }
+
+  .code-text,
+  .code-text * {
+    color: var(--global-theme-color-light) !important;
+  }
+
+  .rich-warning-block,
+  .rich-alert-block {
+    --n-title-text-color: var(--global-theme-color-light) !important;
+    --n-content-text-color: var(--global-theme-color-light) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .rich-warning-block {
+    --n-color: rgba(120, 92, 30, 0.42) !important;
+
+    .n-alert-body__title,
+    .rich-text-content,
+    .fw-bold,
+    .fw-thin,
+    .fw-date,
+    .fw-fromNow,
+    .center-text,
+    .rich-underline,
+    .rich-strike,
+    .n-alert-body__content,
+    .n-alert-body__content span,
+    .n-alert-body__content div,
+    .n-alert-body__content p,
+    .n-alert-body__content strong,
+    .n-alert-body__content em,
+    .n-alert-body__content b,
+    .n-alert-body__content i,
+    .n-alert-body__content a:not(.fw-link) {
+      color: #f2cf86 !important;
+    }
+  }
+
+  .rich-alert-block {
+    --n-color: rgba(40, 68, 108, 0.46) !important;
+
+    .n-alert-body__title,
+    .rich-text-content,
+    .fw-bold,
+    .fw-thin,
+    .fw-date,
+    .fw-fromNow,
+    .center-text,
+    .rich-underline,
+    .rich-strike,
+    .n-alert-body__content,
+    .n-alert-body__content span,
+    .n-alert-body__content div,
+    .n-alert-body__content p,
+    .n-alert-body__content strong,
+    .n-alert-body__content em,
+    .n-alert-body__content b,
+    .n-alert-body__content i,
+    .n-alert-body__content a:not(.fw-link) {
+      color: #aacef7 !important;
+    }
+  }
+
+  .rich-warning-block .fw-link,
+  .rich-warning-block .fw-link *,
+  .rich-alert-block .fw-link,
+  .rich-alert-block .fw-link * {
+    color: #7fb6ff !important;
+  }
+}
 </style>

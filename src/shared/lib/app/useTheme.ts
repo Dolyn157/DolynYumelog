@@ -1,5 +1,14 @@
-import { computed, watchEffect } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { useStorage } from "@vueuse/core";
+
+export const osDark = ref(false);
+if (typeof window !== "undefined" && window.matchMedia) {
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  osDark.value = mq.matches;
+  mq.addEventListener("change", (event) => {
+    osDark.value = event.matches;
+  });
+}
 
 const parseHex = (hex: string): [number, number, number] => {
   let cleanHex = hex.replace("#", "");
@@ -23,6 +32,7 @@ export const themeMetrics = computed(() => {
   const [r, g, b] = parseHex(themeColor.value);
 
   const luma = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+  const dark = osDark.value;
 
   const deepOffset = 90;
   const dr = clamp(r - deepOffset);
@@ -30,7 +40,8 @@ export const themeMetrics = computed(() => {
   const db = clamp(b - deepOffset);
   const deepRgbStr = `${dr}, ${dg}, ${db}`;
 
-  const glassTarget = [251, 238, 241];
+  const glassTarget = dark ? [34, 29, 38] : [251, 238, 241];
+  const glassAlpha = dark ? 0.52 : 0.45;
 
   const glassRatio = clamp01(0.08 + (0.5 - luma) * 0.25);
 
@@ -44,12 +55,19 @@ export const themeMetrics = computed(() => {
   const fG = clamp(Math.round((234 * 0.95 + g * 0.05) * contrastBoost));
   const fB = clamp(Math.round((234 * 0.95 + b * 0.05) * contrastBoost));
 
+  const lightTarget = [246, 243, 246];
+  const lightRatio = 0.45;
+  const clR = clamp(Math.round(r * lightRatio + lightTarget[0] * (1 - lightRatio)));
+  const clG = clamp(Math.round(g * lightRatio + lightTarget[1] * (1 - lightRatio)));
+  const clB = clamp(Math.round(b * lightRatio + lightTarget[2] * (1 - lightRatio)));
+
   return {
     rgbStr: `${r}, ${g}, ${b}`,
     deepRgbStr,
     colorDeep: `rgb(${deepRgbStr})`,
+    colorLight: `rgb(${clR}, ${clG}, ${clB})`,
 
-    glassColor: `rgba(${mR}, ${mG}, ${mB}, 0.45)`,
+    glassColor: `rgba(${mR}, ${mG}, ${mB}, ${glassAlpha})`,
 
     glassFont: `rgba(${Math.round(mR * 0.12)}, ${Math.round(mG * 0.12)}, ${Math.round(mB * 0.12)}, 0.92)`,
 
@@ -58,6 +76,7 @@ export const themeMetrics = computed(() => {
     directFont: `rgba(${fR}, ${fG}, ${fB}, 0.98)`,
 
     luma,
+    dark,
   };
 });
 
@@ -76,10 +95,13 @@ export const useTheme = () => {
     const m = themeMetrics.value;
     const luma = m.luma;
 
+    root.style.colorScheme = m.dark ? "dark" : "light";
+
     root.style.setProperty("--global-theme-color", themeColor.value);
     root.style.setProperty("--global-theme-color-rgb", m.rgbStr);
     root.style.setProperty("--global-theme-rgb-deep", m.deepRgbStr);
     root.style.setProperty("--global-theme-color-deep", m.colorDeep);
+    root.style.setProperty("--global-theme-color-light", m.colorLight);
     root.style.setProperty("--global-theme-glass", m.glassColor);
     root.style.setProperty("--glass-font-color", m.glassFont);
     root.style.setProperty("--glass-text-shadow", m.glassShadow);

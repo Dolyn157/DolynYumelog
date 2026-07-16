@@ -351,8 +351,8 @@ homeContactUseHead(computed(() => data.value?.playerRating?.toString() || ""));
     mask-composite: exclude;
     background: radial-gradient(
       180px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.75),
-      rgba(251, 238, 241, 0.25) 30%,
+      rgba(var(--glow-rgb), 0.75),
+      rgba(var(--glow-rgb), 0.25) 30%,
       transparent 70%
     );
 
@@ -442,6 +442,10 @@ homeContactUseHead(computed(() => data.value?.playerRating?.toString() || ""));
     &:hover {
       background: rgba(255, 255, 255, 0.5);
       outline: none;
+
+      @media (prefers-color-scheme: dark) {
+        background: rgba(255, 255, 255, 0.14);
+      }
     }
 
     .contactsBotton {

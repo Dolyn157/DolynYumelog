@@ -217,7 +217,7 @@ watchEffect(() => {
 .buttonI18 {
   margin-right: 1em;
   height: 2.2em;
-  border: 1px solid rgba(251, 238, 241, 0.2);
+  border: 1px solid rgba(var(--glow-rgb), 0.2);
   pointer-events: auto;
   min-width: var(--dynamic-width, auto);
   width: auto;
@@ -240,6 +240,45 @@ watchEffect(() => {
   white-space: nowrap;
   @media (max-width: 300px) {
     display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .v-binder-follower-content .n-popselect-menu.n-base-select-menu {
+    --n-color: rgba(38, 32, 42, 0.86) !important;
+    background-color: var(--n-color) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+    --n-option-text-color: var(--direct-font-color) !important;
+    --n-option-text-color-active: var(--direct-font-color) !important;
+    --n-option-text-color-pressed: var(--direct-font-color) !important;
+    --n-option-check-color: var(--global-theme-color-light) !important;
+    --n-option-color-pending: rgba(255, 255, 255, 0.14) !important;
+    --n-option-color-active: rgba(255, 255, 255, 0.14) !important;
+    --n-option-color-active-pending: rgba(255, 255, 255, 0.2) !important;
+
+    .n-base-select-option {
+      color: var(--direct-font-color) !important;
+
+      .n-base-select-option__content {
+        text-shadow: none !important;
+      }
+
+      &.n-base-select-option--selected .n-base-select-option__content {
+        color: #fff !important;
+        text-shadow: none !important;
+      }
+
+      .n-base-select-option__check svg {
+        fill: var(--global-theme-color-light) !important;
+        stroke: var(--global-theme-color-light) !important;
+      }
+
+      &.n-base-select-option--selected,
+      &.n-base-select-option--pending {
+        background-color: rgba(255, 255, 255, 0.14) !important;
+      }
+    }
   }
 }
 </style>

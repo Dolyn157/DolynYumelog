@@ -60,7 +60,7 @@ const { onMove, onLeave, onEnter } = useCardGlow();
     z-index: 1;
     background: radial-gradient(
       280px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.12),
+      rgba(var(--glow-rgb), 0.12),
       transparent 65%
     );
     opacity: var(--opacity);
@@ -95,8 +95,8 @@ const { onMove, onLeave, onEnter } = useCardGlow();
     // 4. 背景光斑逻辑（保持不变）
     background: radial-gradient(
       160px circle at var(--mx) var(--my),
-      rgba(251, 238, 241, 0.75),
-      rgba(251, 238, 241, 0.25) 30%,
+      rgba(var(--glow-rgb), 0.75),
+      rgba(var(--glow-rgb), 0.25) 30%,
       transparent 70%
     );
 
