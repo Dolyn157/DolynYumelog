@@ -1,7 +1,10 @@
 import { computed, ref, watchEffect } from "vue";
 import { useStorage } from "@vueuse/core";
 
+type ThemeMode = "system" | "light" | "dark";
+export const themeMode = useStorage<ThemeMode>("themeMode", "system");
 export const osDark = ref(false);
+
 if (typeof window !== "undefined" && window.matchMedia) {
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
   osDark.value = mq.matches;
@@ -9,6 +12,12 @@ if (typeof window !== "undefined" && window.matchMedia) {
     osDark.value = event.matches;
   });
 }
+
+export const isDarkTheme = computed(() => {
+  if (themeMode.value === "dark") return true;
+  if (themeMode.value === "light") return false;
+  return osDark.value;
+});
 
 const parseHex = (hex: string): [number, number, number] => {
   let cleanHex = hex.replace("#", "");
@@ -32,7 +41,7 @@ export const themeMetrics = computed(() => {
   const [r, g, b] = parseHex(themeColor.value);
 
   const luma = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
-  const dark = osDark.value;
+  const dark = isDarkTheme.value;
 
   const deepOffset = 90;
   const dr = clamp(r - deepOffset);
@@ -96,7 +105,7 @@ export const useTheme = () => {
     const luma = m.luma;
 
     root.style.colorScheme = m.dark ? "dark" : "light";
-
+    root.dataset.theme = m.dark ? "dark" : "light";
     root.style.setProperty("--global-theme-color", themeColor.value);
     root.style.setProperty("--global-theme-color-rgb", m.rgbStr);
     root.style.setProperty("--global-theme-rgb-deep", m.deepRgbStr);

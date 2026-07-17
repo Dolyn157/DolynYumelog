@@ -442,10 +442,6 @@ homeContactUseHead(computed(() => data.value?.playerRating?.toString() || ""));
     &:hover {
       background: rgba(255, 255, 255, 0.5);
       outline: none;
-
-      @media (prefers-color-scheme: dark) {
-        background: rgba(255, 255, 255, 0.14);
-      }
     }
 
     .contactsBotton {
@@ -465,6 +461,14 @@ homeContactUseHead(computed(() => data.value?.playerRating?.toString() || ""));
       justify-content: center;
       align-content: center;
     }
+  }
+}
+
+:global(html[data-theme="dark"]) {
+  .contacts .cButton:hover,
+  .contacts .cButton:focus,
+  .contacts .cButton:active {
+    background: rgba(255, 255, 255, 0.14);
   }
 }
 </style>

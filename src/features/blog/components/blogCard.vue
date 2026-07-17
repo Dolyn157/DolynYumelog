@@ -1072,7 +1072,7 @@ $border-radius: 16px;
   }
 }
 
-@media (prefers-color-scheme: dark) {
+:global(html[data-theme="dark"]) {
   .post-card .post-meta,
   .post-card .post-meta time,
   .post-card .post-meta span,

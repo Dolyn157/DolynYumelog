@@ -243,7 +243,7 @@ watchEffect(() => {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+:global(html[data-theme="dark"]) {
   .v-binder-follower-content .n-popselect-menu.n-base-select-menu {
     --n-color: rgba(38, 32, 42, 0.86) !important;
     background-color: var(--n-color) !important;

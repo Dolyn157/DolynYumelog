@@ -584,7 +584,7 @@ a.fw-link {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+:global(html[data-theme="dark"]) {
   .rich-text-content,
   .fw-bold,
   .fw-thin,

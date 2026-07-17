@@ -531,7 +531,7 @@ figure {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+:global(html[data-theme="dark"]) {
   .n-modal-mask {
     background-color: rgba(0, 0, 0, 0.3) !important;
   }

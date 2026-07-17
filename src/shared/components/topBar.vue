@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import FromNowTime from "@/features/home/components/fromNowTime.vue";
 import I18NComponents from "@/shared/components/i18nComponents.vue";
+import ThemeToggle from "@/shared/components/ThemeToggle.vue";
 import { nextTick, onMounted, ref, watch } from "vue";
 import { lang } from "@/shared/lib/app/setupLang.ts";
 import { useCardGlow } from "@/shared/lib/app/animationCalculate.ts";
@@ -57,11 +58,16 @@ const { onMove, onLeave, onEnter } = useCardGlow();
 
 <template>
   <div class="overlay" @mouseenter="onEnter" @mouseleave="onLeave" @mousemove="onMove">
-    <div class="i18">
-      <I18NComponents :btn-width="btnWidth"></I18NComponents>
-    </div>
     <div class="fromTime">
       <from-now-time :btn-width="btnWidth"></from-now-time>
+    </div>
+    <div class="rightTools">
+      <div class="theme">
+        <ThemeToggle :btn-width="btnWidth" />
+      </div>
+      <div class="i18">
+        <I18NComponents :btn-width="btnWidth"></I18NComponents>
+      </div>
     </div>
   </div>
 </template>
@@ -82,7 +88,7 @@ const { onMove, onLeave, onEnter } = useCardGlow();
   -webkit-backdrop-filter: saturate(110%) blur(5px);
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: space-between;
   box-sizing: border-box;
 
@@ -145,6 +151,22 @@ const { onMove, onLeave, onEnter } = useCardGlow();
     display: flex;
     align-items: center;
     animation: YToolIn 0.5s linear 0s 1;
+    flex-shrink: 0;
+    z-index: 3;
+  }
+
+  .theme {
+    display: flex;
+    align-items: rightß;
+    animation: YToolIn 0.5s linear 0s 1;
+    flex-shrink: 0;
+    z-index: 3;
+  }
+
+  .rightTools {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
     flex-shrink: 0;
     z-index: 3;
   }
