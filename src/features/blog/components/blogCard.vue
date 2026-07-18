@@ -40,6 +40,7 @@ import RichTextRenderer from "@/features/blog/components/RichTextRenderer.vue";
 import type { TextToken } from "@/shared/lib/dsl/BlogRichText/types";
 import { ImageContent, Post, PostBlock, ProcessedPost } from "@/shared/types/blog.ts";
 import { isSSR } from "@/shared/lib/app/useHead.ts";
+import { parsePostTags } from "@/shared/lib/app/postTags.ts";
 import LazyBlock from "@/features/blog/components/LazyBlock.vue";
 import { sanitizeAssetUrl } from "@/shared/lib/app/siteOrigin.ts";
 
@@ -359,6 +360,11 @@ const renderDetailContent = (): VNodeChild => {
               <time :datetime="post.time" :lang="lang">{{ formatDate(post.time!) }}</time>
               <span class="time-divider">|</span>
               <span :lang="lang">{{ formatTime(post.time) }}</span>
+            </div>
+            <div v-if="parsePostTags(post.tags).length" class="post-tags">
+              <span v-for="tag in parsePostTags(post.tags)" :key="tag" class="post-tag">
+                #{{ tag }}
+              </span>
             </div>
           </div>
           <div class="post-body">
@@ -897,13 +903,32 @@ $border-radius: 16px;
           stroke-width: 1px;
         }
       }
-
       .time-divider {
         display: flex;
         align-items: center;
         height: 1em;
         transform: translateY(-1px);
       }
+    }
+    .post-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.25rem 0 0.45rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .post-tag {
+      font-size: 0.78rem;
+      line-height: 1.4;
+      padding: 0.08rem 0.45rem;
+      border-radius: 999px;
+      color: var(--global-theme-color-deep);
+      background: rgba(var(--global-theme-rgb-deep), 0.08);
+      border: 1px solid rgba(var(--global-theme-rgb-deep), 0.15);
+      white-space: nowrap;
     }
   }
 
@@ -1072,7 +1097,12 @@ $border-radius: 16px;
   }
 }
 
-:global(html[data-theme="dark"]) {
+html[data-theme="dark"] {
+  .post-card .post-header .post-tag {
+    color: var(--global-theme-color-light)  !important;
+    background: rgba(115, 215, 215, 0.16);
+    border-color: rgba(155, 255, 255, 0.28);
+  }
   .post-card .post-meta,
   .post-card .post-meta time,
   .post-card .post-meta span,

@@ -24,4 +24,5 @@ export interface BaseBlock<TType extends string, TContent = undefined> {
 export interface BaseMetadata {
   time: string;
   pin?: string;
+  tags?: string;
 }
