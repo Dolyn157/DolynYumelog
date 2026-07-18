@@ -15,7 +15,6 @@ dist-ssr
 coverage
 *.local
 .vite-ssg-temp
-pnpm-workspace.yaml
 
 /cypress/videos/
 /cypress/screenshots/
