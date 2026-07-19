@@ -356,12 +356,12 @@ const renderDetailContent = (): VNodeChild => {
       @mouseenter="onEnter"
       @mouseleave="onLeave"
       @mousemove="onMove"
+      @click="cardClick(post)"
     >
       <router-link
         :aria-label="post.title"
         :to="{ name: 'blog', params: { id: getSlug(post) || 'error' } }"
         class="post-card-click-overlay"
-        @click.prevent.stop="cardClick(post)"
       >
       </router-link>
       <div class="postContent">
@@ -504,7 +504,7 @@ $border-radius: 16px;
   inset: 0;
   display: block;
   opacity: 0;
-  z-index: 5;
+  z-index: 0;
   background: transparent;
   text-decoration: none;
   color: transparent;
