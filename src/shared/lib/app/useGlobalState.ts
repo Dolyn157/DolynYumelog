@@ -136,29 +136,31 @@ const parseAndCacheBlockTokens = (block: PostBlock) => {
   return tokens;
 };
 
+export const processPostForCard = (post: Post): ProcessedPost => {
+  const blocks = post.blocks ?? [];
+  const imageBlocks = blocks.filter((block): block is ImagePostBlock => block.type === "image");
+
+  const cacheKey = getDescriptionCacheKey(post);
+  let description = descriptionCache.get(cacheKey);
+
+  if (description === undefined) {
+    description = getDescriptionText(blocks, 330);
+    descriptionCache.set(cacheKey, description);
+  }
+
+  return {
+    ...post,
+    blocks,
+    imageBlocks,
+    displayDescription: description,
+    temp_id: getProcessedPostTempId(post),
+  };
+};
+
 export const processedPosts = computed<ProcessedPost[]>(() => {
   if (!posts.value) return [];
 
-  return posts.value.map((post) => {
-    const blocks = post.blocks ?? [];
-    const imageBlocks = blocks.filter((block): block is ImagePostBlock => block.type === "image");
-
-    const cacheKey = getDescriptionCacheKey(post);
-    let description = descriptionCache.get(cacheKey);
-
-    if (description === undefined) {
-      description = getDescriptionText(blocks, 330);
-      descriptionCache.set(cacheKey, description);
-    }
-
-    return {
-      ...post,
-      blocks,
-      imageBlocks,
-      displayDescription: description,
-      temp_id: getProcessedPostTempId(post),
-    };
-  });
+  return posts.value.map(processPostForCard);
 });
 
 export const parsedBlocks = shallowRef<PostBlock[]>([]);

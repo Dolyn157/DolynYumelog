@@ -10,7 +10,7 @@ import {
   VNodeChild,
   watch,
 } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   changeSpareUrl,
   faultTimes,
@@ -31,6 +31,7 @@ import {
   currentPostTitle,
   parsedBlocks,
   posts,
+  processPostForCard,
   processedPosts,
   selectedPost,
   showModal,
@@ -44,10 +45,18 @@ import { parsePostTags } from "@/shared/lib/app/postTags.ts";
 import LazyBlock from "@/features/blog/components/LazyBlock.vue";
 import { sanitizeAssetUrl } from "@/shared/lib/app/siteOrigin.ts";
 
+const props = defineProps<{
+  sourcePosts?: Post[];
+}>();
+
 const hydrated = ref(false);
 const visibleIds = ref(new Set<string>());
 const isHydrated = ref(false);
 let observer: IntersectionObserver | null = null;
+const displayPosts = computed<ProcessedPost[]>(() => {
+  if (!props.sourcePosts) return processedPosts.value;
+  return props.sourcePosts.map(processPostForCard);
+});
 
 const getPostId = (post: ProcessedPost) => {
   return getSlug(post) || post.temp_id;
@@ -96,7 +105,7 @@ onMounted(async () => {
 });
 
 watch(
-  () => processedPosts.value.length,
+  () => displayPosts.value.length,
   async () => {
     await nextTick(() => initObserver());
   },
@@ -115,6 +124,7 @@ const isVisible = (post: ProcessedPost, index: number) => {
 const ssrHidePosts = computed(() => !(isSSR && selectedPost.value));
 const { onMove, onLeave, onEnter } = useCardGlow();
 const router = useRouter();
+const route = useRoute();
 const resolveDisplayImage = (img: ImageContent, useSpare = changeSpareUrl.value): string => {
   const primary = sanitizeAssetUrl(img.src);
   const spare = sanitizeAssetUrl(img.spareUrl);
@@ -154,7 +164,6 @@ const blogHandlers = computed(() => {
 });
 
 const { openModal } = useRouteModal({
-  baseRouteName: "blog",
   paramKey: "id",
   paramSource: "path",
   modals: blogModals,
@@ -165,7 +174,9 @@ const { openModal } = useRouteModal({
   },
   onInvalidId: async () => {
     $message.warning(blogDisplay.value.unknownPostId, true, 3000);
-    await router.replace({ name: "blog" });
+    const params = { ...route.params };
+    delete params.id;
+    await router.replace({ name: route.name || "blog", params });
   },
 });
 
@@ -175,11 +186,18 @@ const cardClick = (post: Post) => {
     $message.warning(blogDisplay.value.errorPostId, true, 3000);
     return;
   }
-  void openModal(slug);
+  if (route.name === "blog") {
+    void openModal(slug);
+    return;
+  }
+
+  void router.push({ name: "blog", params: { id: slug } });
 };
 
 const closePortal = async () => {
-  await router.replace({ name: "blog" });
+  const params = { ...route.params };
+  delete params.id;
+  await router.replace({ name: route.name || "blog", params });
 };
 
 const getPreviewImages = (post: ProcessedPost): ImageContent[] => {
@@ -331,7 +349,7 @@ const renderDetailContent = (): VNodeChild => {
 <template>
   <div v-if="ssrHidePosts" class="post-container">
     <article
-      v-for="(post, index) in processedPosts"
+      v-for="(post, index) in displayPosts"
       :key="post.temp_id"
       :data-id="getPostId(post)"
       class="post-card glass"
@@ -362,9 +380,15 @@ const renderDetailContent = (): VNodeChild => {
               <span :lang="lang">{{ formatTime(post.time) }}</span>
             </div>
             <div v-if="parsePostTags(post.tags).length" class="post-tags">
-              <span v-for="tag in parsePostTags(post.tags)" :key="tag" class="post-tag">
+              <router-link
+                v-for="tag in parsePostTags(post.tags)"
+                :key="tag"
+                :to="{ name: 'tag', params: { tag } }"
+                class="post-tag"
+                @click.stop
+              >
                 #{{ tag }}
-              </span>
+              </router-link>
             </div>
           </div>
           <div class="post-body">
@@ -405,7 +429,7 @@ const renderDetailContent = (): VNodeChild => {
     </article>
   </div>
 
-  <div v-if="yamlLoading && processedPosts.length === 0" class="loading-state">
+  <div v-if="yamlLoading && displayPosts.length === 0" class="loading-state">
     <div class="loader">
       <n-alert v-if="serverError" :title="blogDisplay.listFetchError" class="alert" type="error">
         {{ blogDisplay.serverFault }}
@@ -921,6 +945,8 @@ $border-radius: 16px;
     }
 
     .post-tag {
+      position: relative;
+      z-index: 6;
       font-size: 0.78rem;
       line-height: 1.4;
       padding: 0.08rem 0.45rem;
@@ -929,6 +955,7 @@ $border-radius: 16px;
       background: rgba(var(--global-theme-rgb-deep), 0.08);
       border: 1px solid rgba(var(--global-theme-rgb-deep), 0.15);
       white-space: nowrap;
+      text-decoration: none;
     }
   }
 
@@ -1099,7 +1126,7 @@ $border-radius: 16px;
 
 html[data-theme="dark"] {
   .post-card .post-header .post-tag {
-    color: var(--global-theme-color-light)  !important;
+    color: var(--global-theme-color-light) !important;
     background: rgba(115, 215, 215, 0.16);
     border-color: rgba(155, 255, 255, 0.28);
   }

@@ -15,6 +15,12 @@ export const routes: RouteRecordRaw[] = [
     props: true,
   },
   {
+    path: "/tags/:tag",
+    name: "tag",
+    component: () => import("../../pages/tags/TagPage.vue"),
+    props: true,
+  },
+  {
     path: "/:pathMatch(.*)*",
     redirect: {
       path: "/",

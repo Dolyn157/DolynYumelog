@@ -4,7 +4,7 @@ lang: zh
 id: blog3
 pin: false
 title: 我对日本刚刚实行的《LGBT理解增进法》的一些疑虑
-tags: lgbt, gender-politics, japan-politics
+tags: lgbt, gender-politics, japan-politics, society
 @end
 
 

@@ -66,6 +66,11 @@
         "redirect": null
       },
       {
+        "path": "/tags/:tag",
+        "name": "tag",
+        "redirect": null
+      },
+      {
         "path": "/:pathMatch(.*)*",
         "name": null,
         "redirect": {
@@ -79,10 +84,14 @@
     "paths": {
       "home": "/",
       "blog": "/blog/abc",
+      "tag": "/tags/lgbt",
       "missing": "/missing"
     },
     "expectedBlogParams": {
       "id": "abc"
+    },
+    "expectedTagParams": {
+      "tag": "lgbt"
     },
     "expectedMissingMatchedPaths": ["/:pathMatch(.*)*"]
   }

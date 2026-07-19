@@ -46,10 +46,14 @@ export const useRouteModal = ({
   };
 
   const clearRouteParam = async () => {
+    const params = { ...route.params };
+    delete params[paramKey];
+
     const nav =
       paramSource === "path"
         ? {
             name: baseRouteName || route.name || "home",
+            params,
           }
         : {
             name: route.name || "home",

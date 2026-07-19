@@ -4,6 +4,7 @@ lang: zh
 id: 1
 pin: true
 title: 当代人生育率下降是因为他们没有责任心吗
+tags: society
 @end
 
 @text

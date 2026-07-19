@@ -289,6 +289,7 @@ lang: zh
 id: bangkok-life
 pin: true
 title: 曼谷的午后
+tags: life, bangkok
 @end
 ```
 
@@ -302,6 +303,7 @@ title: 曼谷的午后
 | `lang`   | string | 文章语言，如 `zh` / `en` / `ja` |
 | `layout` | string | 布局类型，供页面层决定如何展示           |
 | `pin`    | string | 是否置顶，通常写 `true` / `false` |
+| `tags`   | string | 文章标签，每个标签之间用 `,` 分割 |
 
 ### 每个字段的用途
 

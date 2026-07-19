@@ -65,9 +65,11 @@ interface AppModulesUnitFixture {
     paths: {
       home: string;
       blog: string;
+      tag: string;
       missing: string;
     };
     expectedBlogParams: Record<string, string>;
+    expectedTagParams: Record<string, string>;
     expectedMissingMatchedPaths: string[];
   };
 }
@@ -209,11 +211,14 @@ const cases: Array<{ name: string; run: () => Promise<void> | void }> = [
       const router = createAppRouter(true);
       const home = router.resolve(fixture.router.paths.home);
       const blog = router.resolve(fixture.router.paths.blog);
+      const tag = router.resolve(fixture.router.paths.tag);
       const miss = router.resolve(fixture.router.paths.missing);
 
       assert.equal(home.name, "home");
       assert.equal(blog.name, "blog");
+      assert.equal(tag.name, "tag");
       assert.deepEqual(blog.params, fixture.router.expectedBlogParams);
+      assert.deepEqual(tag.params, fixture.router.expectedTagParams);
       assert.deepEqual(
         miss.matched.map((record) => record.path),
         fixture.router.expectedMissingMatchedPaths,
