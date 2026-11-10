@@ -34,3 +34,7 @@ coverage
 .eslintcache
 /yumeDSL/
 public/data/blog/《性的指向及びジェンダーアイデンティティの多様性に関する国民の理解の増進に関する法律》.md
+
+# MacOS
+
+*.Identifier
