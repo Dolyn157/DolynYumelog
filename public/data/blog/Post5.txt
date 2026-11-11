@@ -1,0 +1,45 @@
+@meta
+time: 20261111
+lang: zh
+id: post5
+title: 播客系统 1.3 更新 —— 优化 @vicons/fluent 图标库的导入
+tags: Blog
+pin:false
+@end
+
+@text
+
+$$center($$bold(之前的状况 —— 构建过程中加载图标需要大量时间)$$)$$
+@end
+
+@image
+- src: /data/blog/post5/before.png
+  desc: 优化前的构建输出
+@end
+
+@text
+运行 build 将 Vue 工程渲染成 HTML 文件的过程中，SSR 入口导入花了约$$bold(两分钟)$$，而Rendering Pages 到 Build finished 仍花了 $$bold(178 秒)$$，体感极差。
+经过我用 Codex 对工程文件进行检查，发现构建过程主要是卡在了 App.vue, ThemeToggle.vue 两个组件的渲染过程中加载 @vicons/fluent 图标库的时刻。以及 渲染 blogCard.vue 组件的过程中加载 @vicons/material 的时刻。
+解决这个问题的做法是将以上组件中的 5 个图标改为$$bold(按单图标导入)$$，避免 Node 加载两个图标包的完整入口。
+
+@end
+
+@image
+- src: /data/blog/post5/icon-imports.png
+  desc: 图标导入优化
+@end
+
+@text
+$$center($$bold(优化后的成果)$$)$$
+@end
+
+@image
+- src: /data/blog/post5/build-client.png
+  desc: 优化后的客户端构建输出
+- src: /data/blog/post5/build-server.png
+  desc: 优化后的服务端构建输出
+@end
+
+@text
+经过上面的优化后  Build for Server 只需 1.51 秒， Build for Client 只需12.96秒。效果还是非常显著的。
+@end
