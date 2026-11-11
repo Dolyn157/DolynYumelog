@@ -171,7 +171,13 @@ Sitemap: ${siteOrigin}/sitemap.xml
     },
 
     ssr: {
-      noExternal: ["naive-ui", "vueuc", "@css-render/vue3-ssr"],
+      noExternal: [
+        "naive-ui",
+        "vueuc",
+        "@css-render/vue3-ssr",
+        "@vicons/fluent",
+        "@vicons/material",
+      ],
     },
   };
 });

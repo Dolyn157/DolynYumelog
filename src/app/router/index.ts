@@ -1,23 +1,35 @@
 import type { RouteRecordRaw } from "vue-router";
 import { createMemoryHistory, createRouter, createWebHistory } from "vue-router";
 
+const loadRoute = async <T>(route: string, load: () => Promise<T>): Promise<T> => {
+  if (!import.meta.env.SSR || process.env.YUME_SSG_PROFILE !== "1") return load();
+
+  const start = performance.now();
+  console.log(`[SSG/profile] import route=${route} start`);
+  try {
+    return await load();
+  } finally {
+    console.log(`[SSG/profile] import route=${route} ms=${(performance.now() - start).toFixed(1)}`);
+  }
+};
+
 export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
-    component: () => import("../../pages/home/HomePage.vue"),
+    component: () => loadRoute("/", () => import("../../pages/home/HomePage.vue")),
     props: true,
   },
   {
     path: "/blog/:id?",
     name: "blog",
-    component: () => import("../../pages/blog/BlogPage.vue"),
+    component: () => loadRoute("/blog", () => import("../../pages/blog/BlogPage.vue")),
     props: true,
   },
   {
     path: "/tags/:tag",
     name: "tag",
-    component: () => import("../../pages/tags/TagPage.vue"),
+    component: () => loadRoute("/tags", () => import("../../pages/tags/TagPage.vue")),
     props: true,
   },
   {

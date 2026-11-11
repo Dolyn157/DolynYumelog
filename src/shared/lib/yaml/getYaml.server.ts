@@ -26,15 +26,27 @@ const toPublicPath = (resourcePath: string): string => {
   return path.resolve(process.cwd(), "public", resourcePath.replace(/^\/+/, ""));
 };
 
-const readTextResource = async (resourcePath: string): Promise<string> => {
+const readTextResource = async (resourcePath: string, retryCount = 0): Promise<string> => {
   if (isHttpUrl(resourcePath)) {
-    const res = await fetch(resourcePath);
+    const started = performance.now();
+    let status = "error";
+    try {
+      const res = await fetch(resourcePath);
+      status = String(res.status);
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch: ${resourcePath} (${res.status})`);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${resourcePath} (${res.status})`);
+      }
+
+      return await res.text();
+    } finally {
+      if (process.env.YUME_SSG_TRACE === "1") {
+        const elapsedMs = Math.round(performance.now() - started);
+        console.log(
+          `[SSG/read] url=${resourcePath} ms=${elapsedMs} retry=${retryCount} status=${status}`,
+        );
+      }
     }
-
-    return await res.text();
   }
 
   const fullPath = toPublicPath(resourcePath);
@@ -70,6 +82,24 @@ let lastSingleReadFailed: {
 
 const api = createYamlApi(readTextResource, {
   state,
+  transformConfig(config) {
+    const blog = config.blog;
+    if (process.env.YUME_SSG_LOCAL_FIRST !== "1" || !blog?.spareUrl || !blog.spareListUrl) {
+      return config;
+    }
+    if (!isHttpUrl(blog.url) || isHttpUrl(blog.spareUrl) || isHttpUrl(blog.spareListUrl)) {
+      return config;
+    }
+    return {
+      ...config,
+      blog: {
+        url: blog.spareUrl,
+        listUrl: blog.spareListUrl,
+        spareUrl: blog.url,
+        spareListUrl: blog.listUrl,
+      },
+    };
+  },
   onConfigLoadFailed(payload) {
     lastConfigLoadFailed = payload;
   },

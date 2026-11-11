@@ -17,7 +17,8 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { NButton, NIcon } from "naive-ui";
-import { WeatherMoon24Regular, WeatherSunny24Regular } from "@vicons/fluent";
+import WeatherMoon24Regular from "@vicons/fluent/es/WeatherMoon24Regular.js";
+import WeatherSunny24Regular from "@vicons/fluent/es/WeatherSunny24Regular.js";
 import { isDarkTheme, themeColor, themeMode } from "@/shared/lib/app/useTheme.ts";
 
 interface Props {

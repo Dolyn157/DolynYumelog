@@ -12,6 +12,7 @@ import type { SingleResourceData, SingleResourceParser } from "./singleResourceD
 import { SINGLE_RESOURCE_DSL_PARSERS } from "./singleResourceDSL.ts";
 
 export interface YamlApiHooks {
+  transformConfig?: (config: YamlUrlConfig) => YamlUrlConfig;
   onConfigLoadFailed?: (payload: {
     err: string;
     phase: "yaml-config";
@@ -132,7 +133,7 @@ const createInitialState = (): YamlApiState => ({
 });
 
 export const createYamlApi = (
-  readTextResource: (resourcePath: string) => Promise<string>,
+  readTextResource: (resourcePath: string, retryCount?: number) => Promise<string>,
   hooks: YamlApiHooks = {},
 ): YamlApi => {
   let memoizedConfig: Promise<YamlUrlConfig> | undefined;
@@ -202,15 +203,17 @@ export const createYamlApi = (
 
     if (!memoizedConfig || now - cacheTime > TTL) {
       cacheTime = now;
-      memoizedConfig = readJsonResource<YamlUrlConfig>(YAML_CONFIG_RESOURCE_PATH).catch((err) => {
-        hooks.onConfigLoadFailed?.({
-          err: String(err),
-          phase: "yaml-config",
-          resourcePath: YAML_CONFIG_RESOURCE_PATH,
+      memoizedConfig = readJsonResource<YamlUrlConfig>(YAML_CONFIG_RESOURCE_PATH)
+        .then((config) => hooks.transformConfig?.(config) ?? config)
+        .catch((err) => {
+          hooks.onConfigLoadFailed?.({
+            err: String(err),
+            phase: "yaml-config",
+            resourcePath: YAML_CONFIG_RESOURCE_PATH,
+          });
+          memoizedConfig = undefined;
+          throw err;
         });
-        memoizedConfig = undefined;
-        throw err;
-      });
     }
 
     return memoizedConfig;
@@ -232,9 +235,10 @@ export const createYamlApi = (
     resourcePath: string,
     retry = 3,
     delay = 800,
+    retryCount = 0,
   ): Promise<ReadTextResult> => {
     try {
-      const text = await readTextResource(resourcePath);
+      const text = await readTextResource(resourcePath, retryCount);
       state.yamlRetrying = false;
       notifyState();
       return { ok: true, text };
@@ -257,7 +261,7 @@ export const createYamlApi = (
       state.faultTimes = retry;
       notifyState();
       await wait(delay);
-      return readTextWithRetry(resourcePath, retry - 1, delay * 2);
+      return readTextWithRetry(resourcePath, retry - 1, delay * 2, retryCount + 1);
     }
   };
 

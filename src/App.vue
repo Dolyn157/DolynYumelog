@@ -2,7 +2,8 @@
 import { RouterView, useRoute, useRouter } from "vue-router";
 import { computed, onMounted, onServerPrefetch, watch } from "vue";
 import { NButton, NIcon, NMessageProvider } from "naive-ui";
-import { Document28Regular, Home12Regular } from "@vicons/fluent";
+import Document28Regular from "@vicons/fluent/es/Document28Regular.js";
+import Home12Regular from "@vicons/fluent/es/Home12Regular.js";
 import MessageProvider from "@/shared/components/MessageProvider.vue";
 import TopBar from "@/shared/components/topBar.vue";
 import { lang } from "@/shared/lib/app/setupLang.ts";

@@ -25,7 +25,7 @@ import Cancel from "@/icons/cancel.svg";
 import { NAlert, NButton, NCard, NIcon, NImage, NModal } from "naive-ui";
 import { useCardGlow } from "@/shared/lib/app/animationCalculate.ts";
 import { $message } from "@/shared/lib/app/msgUtils.ts";
-import { PushPinSharp } from "@vicons/material";
+import PushPinSharp from "@vicons/material/es/PushPinSharp.js";
 import {
   blogDisplay,
   currentPostTitle,
